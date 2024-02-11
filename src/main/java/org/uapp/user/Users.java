@@ -1,6 +1,7 @@
 package org.uapp.user;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class Users {
@@ -30,10 +31,11 @@ public class Users {
   }
 
   public synchronized UserDTO updateUser(UserUpdationRequest userUpdationRequest) {
+    String updationUserId = userUpdationRequest.getId();
     Optional<User> optionalUser = users
         .stream()
         .filter(
-            _user -> _user.getId() == userUpdationRequest.getId()
+            _user -> _user.getId().equals(updationUserId)
         )
         .findFirst();
 

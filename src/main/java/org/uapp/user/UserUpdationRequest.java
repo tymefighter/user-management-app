@@ -7,7 +7,6 @@ public class UserUpdationRequest {
   private final String id;
   private final String name;
   private final String email;
-  private final String username;
   private final String password;
 
   @JsonCreator
@@ -15,13 +14,11 @@ public class UserUpdationRequest {
       @JsonProperty("id") String id,
       @JsonProperty("name") String name,
       @JsonProperty("email") String email,
-      @JsonProperty("username") String username,
       @JsonProperty("password") String password
   ) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.username = username;
     this.password = password;
   }
 
