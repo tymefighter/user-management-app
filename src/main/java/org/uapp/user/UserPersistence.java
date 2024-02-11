@@ -7,10 +7,11 @@ import org.uapp.logger.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 class UserPersistence {
-  private File file;
+  private final File file;
 
   public UserPersistence(String filepath) {
     file = new File(filepath);
@@ -19,7 +20,10 @@ class UserPersistence {
   public void writeUsers(ArrayList<User> users) {
     try {
       ObjectMapper objectMapper = new ObjectMapper();
-      objectMapper.writeValue(file, users);
+      objectMapper.writeValue(
+          file,
+          users.toArray(new User[0])
+      );
     } catch(IOException ioException) {
       Logger.error(
           "Failed to write users to file",
@@ -33,7 +37,10 @@ class UserPersistence {
       ObjectMapper objectMapper = new ObjectMapper();
       JsonParser parser = objectMapper.createParser(file);
 
-      ArrayList<User> users = parser.readValueAs(ArrayList.class);
+      User[] usersArr = parser.readValueAs(User[].class);
+      ArrayList users = new ArrayList<User>();
+      Collections.addAll(users, usersArr);
+
       return Optional.of(users);
     } catch(IOException ioException) {
       Logger.error(
