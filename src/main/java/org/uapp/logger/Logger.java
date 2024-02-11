@@ -1,7 +1,10 @@
 package org.uapp.logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class Logger {
-  public void log(LogLevel level, String message) {
+  public static void log(LogLevel level, String message) {
     String logMessage = String.format(
         "%s: %s",
         level,
@@ -22,11 +25,27 @@ public class Logger {
     }
   }
 
-  public void error(String message) {
+  public static void error(String message) {
     log(LogLevel.ERROR, message);
   }
 
-  public void info(String message) {
+  public static void error(String message, Exception exception) {
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    exception.printStackTrace(printWriter);
+
+    String messageWithException = String.format(
+        "%s: %s",
+        message,
+        stringWriter.toString()
+    );
+
+    printWriter.close();
+
+    error(messageWithException);
+  }
+
+  public static void info(String message) {
     log(LogLevel.INFO, message);
   }
 }

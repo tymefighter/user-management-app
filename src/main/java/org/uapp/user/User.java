@@ -1,5 +1,8 @@
 package org.uapp.user;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 class User {
@@ -9,11 +12,12 @@ class User {
   private String username;
   private String password;
 
+  @JsonCreator
   public User(
-    String name,
-    String email,
-    String username,
-    String password
+    @JsonProperty("name") String name,
+    @JsonProperty("email") String email,
+    @JsonProperty("username") String username,
+    @JsonProperty("password") String password
   ) {
     this.id = UUID.randomUUID().toString();
     this.name = name;

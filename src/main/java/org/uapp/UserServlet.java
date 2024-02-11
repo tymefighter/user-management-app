@@ -6,8 +6,8 @@ import org.uapp.context.ContextAttributes;
 import org.uapp.logger.Logger;
 import org.uapp.user.UserCreationRequest;
 import org.uapp.user.UserDTO;
+import org.uapp.user.UserManager;
 import org.uapp.user.UserUpdationRequest;
-import org.uapp.user.Users;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,16 +20,8 @@ import java.io.PrintWriter;
 
 @WebServlet("/users")
 public class UserServlet extends HttpServlet {
-  private Logger getLogger(HttpServletRequest request) {
-    return (Logger) request
-        .getServletContext()
-        .getAttribute(
-            ContextAttributes.LOGGER.getAttribute()
-        );
-  }
-
-  private Users getUsers(HttpServletRequest request) {
-    return (Users) request
+  private UserManager getUsers(HttpServletRequest request) {
+    return (UserManager) request
         .getServletContext()
         .getAttribute(
             ContextAttributes.USERS.getAttribute()
@@ -42,8 +34,8 @@ public class UserServlet extends HttpServlet {
       response.setContentType("application/json");
       response.setStatus(200);
 
-      Users users = getUsers(request);
-      UserDTO[] userDTOs = users.getUsers();
+      UserManager userManager = getUsers(request);
+      UserDTO[] userDTOs = userManager.getUsers();
 
       ObjectMapper objectMapper = new ObjectMapper();
       String usersJson = objectMapper.writeValueAsString(userDTOs);
@@ -53,6 +45,7 @@ public class UserServlet extends HttpServlet {
           usersJson
       );
     } catch(IOException ioException) {
+      Logger.error("Failed to handle GET request", ioException);
       response.setStatus(500);
     }
   }
@@ -70,8 +63,8 @@ public class UserServlet extends HttpServlet {
 
       UserCreationRequest userCreationRequest = parser.readValueAs(UserCreationRequest.class);
 
-      Users users = getUsers(request);
-      UserDTO userDTO = users.createUser(userCreationRequest);
+      UserManager userManager = getUsers(request);
+      UserDTO userDTO = userManager.createUser(userCreationRequest);
 
       String userJson = objectMapper.writeValueAsString(userDTO);
 
@@ -80,8 +73,7 @@ public class UserServlet extends HttpServlet {
           userJson
       );
     } catch(IOException ioException) {
-      getLogger(request)
-          .error(ioException.toString());
+      Logger.error("Failed to handle POST request", ioException);
 
       response.setStatus(500);
     }
@@ -100,8 +92,8 @@ public class UserServlet extends HttpServlet {
 
       UserUpdationRequest userUpdationRequest = parser.readValueAs(UserUpdationRequest.class);
 
-      Users users = getUsers(request);
-      UserDTO userDTO = users.updateUser(userUpdationRequest);
+      UserManager userManager = getUsers(request);
+      UserDTO userDTO = userManager.updateUser(userUpdationRequest);
 
       String userJson = objectMapper.writeValueAsString(userDTO);
 
@@ -110,8 +102,7 @@ public class UserServlet extends HttpServlet {
           userJson
       );
     } catch(IOException ioException) {
-      getLogger(request)
-          .error(ioException.toString());
+      Logger.error("Failed to handle PUT request", ioException);
 
       response.setStatus(500);
     }

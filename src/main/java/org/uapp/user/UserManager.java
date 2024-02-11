@@ -1,14 +1,29 @@
 package org.uapp.user;
 
+import org.uapp.env.Env;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Users {
-  private ArrayList<User> users;
+public class UserManager {
+  private final Timer persistenceTimer;
+  private final Optional<UserPersistence> userPersistence;
+  private final ArrayList<User> users;
 
-  public Users() {
-    this.users = new ArrayList<User>();
+  public UserManager() {
+    persistenceTimer = new Timer("User Persistence Timer");
+
+    userPersistence = Env.getUsersFilename().map(
+        UserPersistence::new
+    );
+
+    Optional<ArrayList<User>> optionalUsers = userPersistence.flatMap(
+        UserPersistence::readUsers
+    );
+
+    users = optionalUsers.orElse(new ArrayList<User>());
   }
 
   private UserDTO getUserDTO(User user) {
@@ -20,13 +35,41 @@ public class Users {
     );
   }
 
+  private void persistUsers() {
+    userPersistence.ifPresent(
+        _userPersistence -> _userPersistence.writeUsers(users)
+    );
+  }
+
+  class UserPersistenceTimerTask extends TimerTask {
+    @Override
+    public void run() {
+      persistUsers();
+    }
+  }
+
+  public void setup() {
+    Env
+        .getUserPersistenceTimeMs()
+        .ifPresent(
+            userPersistenceTimeMs -> {
+              UserPersistenceTimerTask userPersistenceTimerTask = new UserPersistenceTimerTask();
+
+              persistenceTimer.schedule(
+                  userPersistenceTimerTask,
+                  userPersistenceTimeMs
+              );
+            }
+        );
+  }
+
   public synchronized UserDTO[] getUsers() {
     return users
         .stream()
         .map(
-          user -> getUserDTO(user)
+            this::getUserDTO
         ).toArray(
-          size -> new UserDTO[size]
+            UserDTO[]::new
         );
   }
 
@@ -66,7 +109,7 @@ public class Users {
     User newUser = new User(
         userCreationRequest.getName(),
         userCreationRequest.getEmail(),
-        userCreationRequest.getUsername() ,
+        userCreationRequest.getUsername(),
         userCreationRequest.getPassword()
     );
 
@@ -76,6 +119,7 @@ public class Users {
   }
 
   public synchronized void cleanup() {
-
+    persistenceTimer.cancel();
+    persistUsers();
   }
 }
