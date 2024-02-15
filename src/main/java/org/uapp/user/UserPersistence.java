@@ -19,6 +19,8 @@ class UserPersistence {
 
   public void writeUsers(ArrayList<User> users) {
     try {
+      Logger.info("Writing users to file: " + file.getAbsolutePath());
+
       ObjectMapper objectMapper = new ObjectMapper();
       objectMapper.writeValue(
           file,
@@ -34,6 +36,13 @@ class UserPersistence {
 
   public Optional<ArrayList<User>> readUsers() {
     try {
+      if(!file.exists()) {
+        Logger.info("Not reading users as file does not exist: " + file.getAbsolutePath());
+        return Optional.empty();
+      }
+
+      Logger.info("Reading users from file: " + file.getAbsolutePath());
+
       ObjectMapper objectMapper = new ObjectMapper();
       JsonParser parser = objectMapper.createParser(file);
 
@@ -44,7 +53,7 @@ class UserPersistence {
       return Optional.of(users);
     } catch(IOException ioException) {
       Logger.error(
-          "Failed to write users from file",
+          "Failed to read users from file",
           ioException
       );
 

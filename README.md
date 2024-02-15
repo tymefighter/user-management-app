@@ -15,5 +15,5 @@ Please set the following environment variables:
 
 Run the following:
 ```
-./gradlew tomcatRun --no-daemon
+./gradlew tomcatRun
 ```

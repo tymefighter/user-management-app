@@ -12,9 +12,12 @@ public class ContextListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     ServletContext context = event.getServletContext();
 
+    UserManager userManager =new UserManager();
+    userManager.setup();
+
     context.setAttribute(
         ContextAttributes.USERS.getAttribute(),
-        new UserManager()
+        userManager
     );
   }
 

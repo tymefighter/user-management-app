@@ -1,6 +1,7 @@
 package org.uapp.user;
 
 import org.uapp.env.Env;
+import org.uapp.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -53,10 +54,18 @@ public class UserManager {
         .getUserPersistenceTimeMs()
         .ifPresent(
             userPersistenceTimeMs -> {
+              Logger.info(
+                  String.format(
+                      "Setting up a periodic task for persisting user data with time period: %d milliseconds",
+                      userPersistenceTimeMs
+                  )
+              );
+
               UserPersistenceTimerTask userPersistenceTimerTask = new UserPersistenceTimerTask();
 
               persistenceTimer.schedule(
                   userPersistenceTimerTask,
+                  0,
                   userPersistenceTimeMs
               );
             }

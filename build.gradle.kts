@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.tomcat.tasks.TomcatRun
+
 plugins {
     id("java")
     id("war")
@@ -23,3 +25,10 @@ dependencies {
 
 tomcat.httpPort = 8080
 tomcat.contextPath = "/"
+
+tasks.named<TomcatRun>("tomcatRun") {
+   doFirst {
+       System.setProperty("USER_FILENAME", "/Users/tymefighter/Downloads/project-run/users.json")
+       System.setProperty("USER_PERSISTENCE_TIME_MS", "10000")
+   }
+}
