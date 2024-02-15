@@ -1,7 +1,6 @@
 package org.uapp.context;
 
 public enum ContextAttributes {
-  LOGGER("logger"),
   USERS("users");
 
   private String attribute;

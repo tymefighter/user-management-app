@@ -1,7 +1,7 @@
 package org.uapp.context;
 
 import org.uapp.logger.Logger;
-import org.uapp.user.Users;
+import org.uapp.user.UserManager;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -12,32 +12,26 @@ public class ContextListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     ServletContext context = event.getServletContext();
 
-    context.setAttribute(
-        ContextAttributes.USERS.getAttribute(),
-        new Users()
-    );
+    UserManager userManager =new UserManager();
+    userManager.setup();
 
     context.setAttribute(
-        ContextAttributes.LOGGER.getAttribute(),
-        new Logger()
+        ContextAttributes.USERS.getAttribute(),
+        userManager
     );
   }
 
   @Override
   public void contextDestroyed(ServletContextEvent event) {
     ServletContext context = event.getServletContext();
-    Users users = (Users) context.getAttribute(
+    UserManager userManager = (UserManager) context.getAttribute(
         ContextAttributes.USERS.getAttribute()
     );
 
-    users.cleanup();
+    userManager.cleanup();
 
     context.removeAttribute(
         ContextAttributes.USERS.getAttribute()
-    );
-
-    context.removeAttribute(
-        ContextAttributes.LOGGER.getAttribute()
     );
   }
 }
