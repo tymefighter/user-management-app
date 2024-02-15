@@ -2,9 +2,16 @@ package org.uapp.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.uapp.annotations.ThreadUnsafe;
 
 import java.util.UUID;
 
+/**
+ * Stores the data for a user and provides methods for manipulating that data.
+ * This class is not thread safe. It does not support concurrent access from
+ * multiple threads.
+ */
+@ThreadUnsafe
 class User {
   private String id;
   private String name;
@@ -49,6 +56,8 @@ class User {
   public String getUsername() {
     return username;
   }
+
+  public String getPassword() { return password; }
 
   public void setPassword(String password) {
     this.password = password;

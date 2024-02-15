@@ -10,6 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * This class provides methods for reading user data from a file (persistent data
+ * source) and for writing user data to a file.
+ *
+ * Note: This class should NOT mutate the user data it receives in its methods.
+ * The user data is not owned by this class, it is owned and managed by
+ * {@link org.uapp.user.UserManager}
+ */
 class UserPersistence {
   private final File file;
 

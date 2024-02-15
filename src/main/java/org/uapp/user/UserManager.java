@@ -1,5 +1,6 @@
 package org.uapp.user;
 
+import org.uapp.annotations.ThreadSafe;
 import org.uapp.env.Env;
 import org.uapp.logger.Logger;
 
@@ -8,6 +9,11 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This class is thread safe. It encapsulates the user data and all the methods
+ * provide a thread safe way to access the data it manages.
+ */
+@ThreadSafe
 public class UserManager {
   private final Timer persistenceTimer;
   private final Optional<UserPersistence> userPersistence;
