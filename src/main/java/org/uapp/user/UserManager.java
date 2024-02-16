@@ -78,9 +78,22 @@ public class UserManager {
         );
   }
 
-  public synchronized UserDTO[] getUsers() {
+  public synchronized UserDTO[] getUsers(UserFilterParams userFilterParams) {
     return users
         .stream()
+        .filter(
+            user -> {
+              String id = userFilterParams.getId();
+              String name = userFilterParams.getName();
+              String username = userFilterParams.getUsername();
+              String email = userFilterParams.getEmail();
+
+              return (id == null || user.getId().equalsIgnoreCase(id))
+                  && (name == null || user.getName().toLowerCase().contains(name.toLowerCase()))
+                  && (username == null || user.getUsername().toLowerCase().contains(username.toLowerCase()))
+                  && (email == null || user.getEmail().toLowerCase().contains(email.toLowerCase()));
+            }
+        )
         .map(
             this::getUserDTO
         ).toArray(
