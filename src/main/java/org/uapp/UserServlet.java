@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.uapp.context.ContextAttributes;
 import org.uapp.logger.Logger;
-import org.uapp.user.UserCreationRequest;
-import org.uapp.user.UserDTO;
-import org.uapp.user.UserManager;
-import org.uapp.user.UserUpdationRequest;
+import org.uapp.user.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,7 +32,14 @@ public class UserServlet extends HttpServlet {
       response.setStatus(200);
 
       UserManager userManager = getUsers(request);
-      UserDTO[] userDTOs = userManager.getUsers();
+
+      String id = request.getParameter("id");
+      String name = request.getParameter("name");
+      String username = request.getParameter("username");
+      String email = request.getParameter("email");
+
+      UserFilterParams userFilterParams = new UserFilterParams(id, name, username, email);
+      UserDTO[] userDTOs = userManager.getUsers(userFilterParams);
 
       ObjectMapper objectMapper = new ObjectMapper();
       String usersJson = objectMapper.writeValueAsString(userDTOs);
