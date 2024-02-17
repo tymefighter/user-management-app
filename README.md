@@ -15,13 +15,15 @@ Note: This application was implemented for learning purposes only.
 
 ### REST APIs for user data querying and mutation
 
-Fetch users based on passed params:
+#### Fetch users based on passed params:
 
 ```
 GET /users?id=<id>&name=<name>&email=<email>&username=<username>
 ```
 
-Create a user
+<img width="1344" alt="Screenshot 2024-02-17 at 6 50 54 PM" src="https://github.com/tymefighter/user-management-app/assets/40702069/42bd1e9a-6890-4525-ad43-d9d51235fa7a">
+
+#### Create a user
 
 ```
 POST /users
@@ -34,7 +36,10 @@ POST /users
 }
 ```
 
-Update a user:
+<img width="1345" alt="Screenshot 2024-02-17 at 6 52 35 PM" src="https://github.com/tymefighter/user-management-app/assets/40702069/dd5549f2-92b4-42de-9ad3-a8bcb9ea27a2">
+
+
+#### Update a user:
 
 ```
 PUT /users
@@ -44,6 +49,9 @@ PUT /users
     "password": "MockPassword1"
 }
 ```
+
+<img width="1343" alt="Screenshot 2024-02-17 at 6 53 58 PM" src="https://github.com/tymefighter/user-management-app/assets/40702069/b34a5149-bf6c-4283-bd18-0fd3be75c88e">
+
 
 ## How to run
 
