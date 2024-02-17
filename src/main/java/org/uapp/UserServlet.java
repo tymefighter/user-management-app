@@ -15,7 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/users")
+@WebServlet("/api/users")
 public class UserServlet extends HttpServlet {
   private UserManager getUsers(HttpServletRequest request) {
     return (UserManager) request

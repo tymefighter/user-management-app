@@ -6,6 +6,13 @@ public class UserFilterParams {
   private final String username;
   private final String email;
 
+  public UserFilterParams() {
+    id = null;
+    name = null;
+    username = null;
+    email = null;
+  }
+
   public UserFilterParams(
       String id,
       String name,
