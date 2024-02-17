@@ -11,7 +11,13 @@ Note: This application was implemented for learning purposes only.
 
 ### UI for user management
 
+#### Adding a new user
 
+https://github.com/tymefighter/user-management-app/assets/40702069/8928b324-09f7-4fd0-879c-f145a5bb70cd
+
+#### Editing an existing user
+
+https://github.com/tymefighter/user-management-app/assets/40702069/380f0607-6f01-4342-b0a5-85a0ad62b55b
 
 ### REST APIs for user data querying and mutation
 
